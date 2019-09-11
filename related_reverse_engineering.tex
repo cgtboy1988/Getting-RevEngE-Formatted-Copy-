@@ -1,0 +1,45 @@
+
+%\subsection{Reverse Engineering of Obfuscated Code}
+%Techniques for analyzing obfuscated code fall in roughly four categories: static, dynamic, hybrid, and symbolic.  
+%\CC{This section needs to be completely rewritten. It needs to be much deeper, citing current works on deobfuscation specifically. Typical text would say ``In xxx, Alice et al. describe a method for deobfuscating virtualized code, using [a static analysis, a combination of ... and ..., ...]. It works well for ... but [fails for ..., is very resource intensive, ...].'' Also, it is good to add text related the work we're doing: ``This is in contrast to the work presented here, in which we...'' You can assume the reader knows a bit about these topics already, so a single sentence introducing the subsection is enough (``Static analysis is...''), then you can go into details about current techniques. You can also group citations together when that make sense, and then use one particular work as the exemplar: ``Several authors (CITATIONS) use [technique] to .... Bob (CITE), for example, ...''}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsubsection{Static Analysis}
+%Static analysis is applied directly to source code without executing that code. A common technique is to first build control flow graphs from the code and conduct further analyses on these graphs, as is done by IDA~\cite{ida} and angr~\cite{angr}.
+
+%Salwan~\cite{salwan2018symbolic}
+%Rolles~\cite{rolles09unpacking} describes a static and manual method for reverse engineering virtualized code, by first identifying the instruction handlers for each virtual instruction, then reconstructing their semantics, and finally building a disassembler that can translate the virtual program to back to machine code instructions.
+
+%Krugel~\cite{kruegel2004static} develops a rule-based approach to defeat binary obfuscations which aim to confuse disassemblers, such as the branch functions proposed by Linn and Debray~\cite{linn_CCS_2003}.
+
+%Kinder~\cite{kinder2012towards} suggests using static analysis to deobfuscate virtualized code by tracking the potential states of the virtual program counter.
+
+%\subsubsection{Dynamic Analysis}
+%Dynamic analysis, by contrast, involves executing code and analyzing it during execution~\cite{ball1999concept}. An attacker using dynamic analysis might step through a program, monitoring resources as each instruction executes. Many common reverse engineering tools enable manual dynamic analysis, such as IDA~\cite{ida} and OllyDbg~\cite{olly}.
+
+%Yadegari et al.~\cite{yadegari15generic} propose a generic way to attack a whole class of obfuscations by computing a complete trace of the program as it is running, using taint analysis to identify instructions that are likely the result of obfuscation, optimizing away those instructions, and, finally, re-flowing the resulting trace back into source code.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsubsection{Hybrid Methods}
+%Many modern reverse engineering methods use a hybrid approach, combining static and dynamic analysis techniques.  Madou et al.~\cite{madou2005hybrid} describe the general methodology for conducting hybrid attacks and apply it to code obfuscated by flattening control flow. As an example of a hybrid method, Kalysch~\cite{kalysch2017vmattack} employs both static and dynamic analysis to convert virtualized code into simpler code.
+
+%Dalla Preda et al.~\cite{dalla2006opaque} suggests using {\em abstract interpretation} to localize opaque predicates within obfuscated code. This is a first step towards removing them. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsubsection{Symbolic Analysis}
+%Symbolic execution~\cite{cadar2008klee} explores the possible paths through a program, executing it symbolically, i.e. building up formulas for expressions that are input-dependent. Constraint solvers are used to determined which paths are feasible, and, for cases when a condition can be both true and false, both paths are explored. Unfortunately, symbolic analysis suffers from performance problems on obfuscated code. Yadegari et al.~\cite{yadegari2015symbolic} suggests and evaluates some strategies for mitigating these performance problems.
+
+%Liang~\cite{liang2017deobfuscation} describes a method to leverage compilers' maturity in reducing redundant code by extracting functions from symbolic analysis of virtualization and inserting those functions into the code where otherwise virtualized code would execute.  Recompilation eliminates dead virtual code.  This hinges on the ability to extract functions from virtualized code.
+
+%http://www-verimag.imag.fr/~mounier/Enseignement/Software_Security/ConcolicExecution.pdf
+
+%\textit{Concolic execution}~\cite{sen2007concolic} improves on pure symbolic analysis by keeping track of both symbolic values and the concrete store. The concrete execution, i.e. normal execution, is used to drive the symbolic execution.
+
+
+%\subsubsection{Machine Learning}
+%Machine learning methods have also been proposed in the context of extracting data from obfuscated programs.~\cite{salem2016metadata}  Machine learning may be employed in any of the mentioned contexts---on static code, dynamic traces, or any other data extracted from the obfuscated program.  Salem demonstrates a high level of accuracy in identifying program obfuscations.  Depending on the transform, Salem also demonstrates success in extracting metadata from obfuscated programs.  However, combinations and layered obfuscation pose significant problems to machine learning methods.
+
+%Ultimately, machine learning may also be applied to program deobfuscation as well, though the imprecise nature of machine learning models presents a number of challenges to deobfuscated program accuracy.
+
+
+

@@ -1,0 +1,12 @@
+\subsection{Data Collection} \label{datacollection}
+Understanding reverse engineering behavior will require understanding of how a human interacts with a set of software tools. Such tools include debuggers, tracers, slicers, disassemblers, decompilers, symbolic analyzers, etc., both off-the-shelf tools and scripts developed by the human reverse engineer to aid in attacking a particular type of software protection. It is the goal of the \revenge's data collection framework to collect the interactions between reverse engineers, the tools that they use, and the challenge programs they are attacking. In order to comprehensively monitor the actions of a reverse engineer, \revenge monitors
+\begin{itemize}
+\itemsep-.5em
+   \item  processes and events such
+   as file open/close and process creation (including arguments);
+   \item window focus changes and
+   data such as $x/y$-location, size, and title;
+   \item mouse events and data such as $x/y$-location and event type (move, press, \ldots);
+   \item any keyboard key presses.
+\end{itemize}
+Finally, a screen shot is taken every $15$ seconds to collect data not otherwise captured. Every event is timestamped and relationships between events are recorded, such as keyboard and mouse input occurring within a particular in-focus window.

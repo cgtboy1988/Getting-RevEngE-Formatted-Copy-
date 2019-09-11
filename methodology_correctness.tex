@@ -1,0 +1,34 @@
+\subsection{Correctness and Precision of Solutions} \label{solutionanalysis}
+When users submit a proposed solution to a reverse engineering challenge ($\mathtt{p}^3.\mathtt{c}$ in Figure~\ref{system}), we must determine whether it is, in fact, an acceptable solution. Two properties of $\mathtt{p}^3.\mathtt{c}$ must be tested:
+\begin{itemize}
+\itemsep-.5em
+    \item Is $\mathtt{p}^3.\mathtt{c}$ a {\em correct} solution, i.e. does it have the same behavior as the original program $\mathtt{p}^0.\mathtt{c}$?
+    \item Is $\mathtt{p}^3.\mathtt{c}$ a {\em precise} solution, i.e. was the user able to remove the obfuscation from $\mathtt{p}^2.\mathtt{exe}$, such that $\mathtt{p}^3.\mathtt{c}$ is close to the original program $\mathtt{p}^0.\mathtt{c}$? 
+\end{itemize}
+A malicious user could submit a program that is simply a decompiled (but not de-obfuscated) version of the challenge program, claiming that it solves the challenge. Such as ``solution'' may be correct, but it is not precise. Or, they may submit a de-obfuscated program that works for most inputs but fails for some corner cases. Such a solution may be precise, but it is not correct.
+
+%We discuss these issues next.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Correctness}
+\revenge checks the solution correctness by {\em testing}: The submitted program is run inside a security sandbox (firejail~\cite{firejail}, in our case), on a set of chosen inputs, and the output is compared to that of the original program. This is easy to do, since the challenge programs are simple hash functions that read input numbers from the command line, and print output numbers on standard output. The issue is how to select a set of comprehensive input test cases that will distinguish a correct from an incorrect proposed solution. 
+
+We use two methods for generating test cases. The first is simply to generate a large number of random inputs $\mathcal{I}_\mathrm{rnd}$ 
+taken from some distribution. Unfortunately, there is no guarantee that all paths of the program will be covered by these inputs. 
+
+The second technique uses symbolic execution. We run Klee ~\cite{cadar2008klee} on the original program $\mathtt{p}^0.\mathtt{c}$ to determine a set of inputs $\mathcal{I}_\mathrm{Klee}$ which covers as many execution paths as possible.  In order to run Klee, the program's argument variable is annotated as symbolic within the code, and Klee's default search is run for 7 hours on the resulting program.  We found that few to no additional test cases were found after this period of time and have not had success finding additional test cases with other Klee search algorithms at this time.
+
+We then merge the input sets $\mathcal{I}_\mathrm{rnd}$ and  $\mathcal{I}_\mathrm{Klee}$, and run the program $\mathtt{p}^0.\mathtt{c}$ on these inputs through a {\em source code coverage tool} ({\tt gcov} in our case~\cite{best2003analyzing}) to determine what fraction of the paths are covered by our test cases.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Precision}
+\label{sec:precision}
+To evaluate the quality of a proposed solution we need to measure how similar $\mathtt{p}^3.\mathtt{c}$ is to the original program $\mathtt{p}^0.\mathtt{c}$. This could be done statically, for example by comparing the programs' control flow graphs, as was done by Krienke~\cite{krinke2001identifying} by comparing program subgraphs for similarity. However, a perfectly acceptable solution might be structurally very different from the original: the reverse engineer might have unrolled loops, for example, or inlined functions. In such cases static code similarly measures would fail.
+
+\revenge instead compares the execution behavior of the original and de-obfuscated programs.  Even then, we cannot expect a deobfuscated challenge to execute identically to the original program, therefore our precision metric has to be {\em fuzzy}. Thus, \revenge uses a custom-built, LLVM based instruction counter to track the number of instructions executed, and we classify these into groups such as {\em arithmetic}, {\em load/store}, {\em branch}, etc. These sets of instructions are then compared to $\mathtt{p}^0.\mathtt{c}$'s performance for similarity.  This provides a deterministic comparison of high-level LLVM instructions executed, allowing a reliable program profile to be generated, similar to work done by Neustifter~\cite{neustifter2010efficient}.
+
+%We cannot expect a deobfuscated challenge to execute identically to the original program, therefore our precision metric has to be {\em fuzzy}. For example, we compare the number of arithmetic operations (in the LLVM instruction set) executed by the two programs, not the exact number of x86 instructions. Similarly, we compare the number of memory operations (loads and stores), without paying attention to the numerous ways a value can be loaded from memory in the x86 instruction set.
+
+%The LLVM instruction set, being much smaller than x86, has the potential to give more generalized performance comparisons:  Because x86 has so many instructions, it is difficult to classify instruction types and thus easily compare, for instance, the number of times a program branches.  LLVM, on the other hand, has a much smaller instruction set which reflects source code more closely.  Specifically, our similarity algorithm does a comparison of all instructions and compares instructions of the same category, rejecting a submission if it is different above a multiplicative threshold for any category counts or for overall instruction counts.
+

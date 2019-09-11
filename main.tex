@@ -1,0 +1,115 @@
+
+%
+%  $Description: Author guidelines and sample document in LaTeX 2.09$ 
+%
+%  $Author: ienne $
+%  $Date: 1995/09/15 15:20:59 $
+%  $Revision: 1.4 $
+%
+
+\documentclass[times, 10pt,twocolumn]{article} 
+\usepackage{latex8}
+\usepackage{times}
+
+\usepackage{titlesec}
+\titlespacing\section{0pt}{12pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
+\titlespacing\subsection{0pt}{12pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
+\titlespacing\subsubsection{0pt}{12pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
+
+%\documentstyle[times,art10,twocolumn,latex8]{article}
+
+%------------------------------------------------------------------------- 
+% take the % away on next line to produce the final camera-ready version 
+\pagestyle{empty}
+
+\usepackage{csquotes}
+
+\usepackage{booktabs}
+
+\usepackage{pdfpages}
+
+\usepackage{subfig}
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+%% Sets page size and margins
+%%\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage{listings}
+\usepackage{xspace}
+
+%\PassOptionsToPackage{bookmarks=false}{hyperref}
+%\hypersetup{draft}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For double blind review
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\revenge}{{\em RevEngE}\xspace}
+%\renewcommand{\revenge}{{\em REvanChe}\xspace}
+\newcommand{\revengeExplanation}{{\em \underline{Rev}erse \underline{Eng}ineering \underline{E}ngine}\xspace}
+%\renewcommand{\revengeExplanation}{{\em \underline{R}everse \underline{E}ngineering \underline{Ch}allenges}\xspace}
+
+\newcommand{\tigress}{{\em Tigress}\xspace}
+%\renewcommand{\tigress}{{\em Obfuscator}\xspace}
+
+\newcommand{\revengeurl}{\url{http://revenge.cs.arizona.edu}\xspace}
+%\renewcommand{\revengeurl}{\url{http://revanche.anonymized.edu}\xspace}
+\renewcommand{\revengeurl}{\url{http://revenge.cs.arizona.edu}\xspace}
+
+\newcommand{\tigressurl}{\url{http://tigress.cs.arizona.edu}\xspace}
+%\renewcommand{\tigressurl}{\url{http://obfuscator.anonymized.edu}\xspace}
+
+\newcommand{\sourceurl}{\url{https://github.com/cgtboy1988/RevEngECompetition}\xspace}
+\renewcommand{\sourceurl}{\url{https://github.com/cgtboy1988/RevEngE}\xspace}
+
+%\newcommand{\IRB}{University of Anonymous, IRB\#XXXXXX}
+
+%------------------------------------------------------------------------- 
+\begin{document}
+
+\title{Getting \revenge:\protect\\A System for Analyzing Reverse Engineering Behavior}
+
+\author{Claire Taylor\\
+University of Arizona\\ Department of Computer Science \\ 1040 E. 4th Street, P.O. box 210077 \\ Tucson, AZ 85712 \\
+\and
+Christian Collberg\\
+University of Arizona\\ Department of Computer Science \\ 1040 E. 4th Street, P.O. box 210077 \\ Tucson, AZ 85712 \\ collberg@email.arizona.edu \\
+}
+%\author{}
+
+\maketitle
+\thispagestyle{empty}
+
+\input{abstract.tex}
+\input{introduction.tex}
+\input{related.tex}
+\input{methodology.tex}
+%\input{other.tex}
+\input{evaluation.tex}
+\input{conclusion.tex}
+
+
+
+
+%------------------------------------------------------------------------- 
+\bibliographystyle{latex8}
+%\nocite{*}
+\bibliography{sample-base}
+
+\end{document}
+

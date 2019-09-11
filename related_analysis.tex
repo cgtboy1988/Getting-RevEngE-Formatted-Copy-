@@ -1,0 +1,45 @@
+
+\subsection{Analyzing Obfuscation Resilience} \label{curanalysis}
+There exist many obfuscating transforms and reverse engineering methods. Some are known through the academic literature, others are kept proprietary by purveyors of obfuscation tools, nation-states, and hackers. Furthermore, there are innumerable ways to combine such methods~\cite{heffner04obfuscation}.  
+
+Evaluating the efficacy of particular strategies for both obfuscation and reverse engineering has proven to be difficult: for a given obfuscation, many reverse engineering techniques might counter it, and for a given reverse engineering technique many obfuscations can render it ineffective.
+
+\subsubsection{Normative Evaluation}
+Some work attempts to reduce the complexity of an obfuscation technique to a known hard problem~\cite{collberg1997taxonomy}. For example, it has been argued that opaque constants can be based on hard problems~\cite{tiella2017automatic}. Unfortunately, this type of argument is fraught with issues. For example, just because a problem is hard in the worst case does not mean that a random instance will be, or that probabilistic algorithms cannot give an acceptable solution in reasonable amounts of time, or that the size of the problem will be sufficient. Additionally, assumptions made for normative evaluation---such as assuming static analysis only---often do not align with real world techniques. Finally, the human element and intuition is not captured by normative evaluation.
+
+\subsubsection{Software Metrics}
+It has been argued~\cite{collberg1997taxonomy} that some software engineering metrics, such as control flow complexity, are related to the difficulty of reverse engineering an obfuscated program. However, this notion does not hold much promise, as empirical studies have shown no correlation between such metrics and human ability to reverse engineer~\cite{sutherland2006empirical}.
+
+\subsubsection{Empirical Studies}
+In contrast to normative analysis of obfuscation, empirical analysis seeks to demonstrate the resilience of an obfuscation technique by testing it against reverse engineering attacks. Generally, empirical analysis focuses on two questions:
+\begin{enumerate}
+\itemsep-.5em
+	\item How well does an obfuscation technique resist an {\em automated attack}, using a particular tool or code analysis algorithm? 
+    \item How well does an obfuscation technique resist a {\em human attacker} attempting to reverse engineer the protected code?
+\end{enumerate}
+
+For the first question, researchers generate obfuscated code with an obfuscator and then run an automated tool on that code~\cite{banescu2016code, banescu2017characterizing, banescu2015framework}. Success metrics include whether the automated tool extracted the protected asset or not, and the amount of resources (time and memory) consumed.  
+
+\subsubsection{Human Studies}
+Ceccato et al.~\cite{ceccato2014need} argue that there is a "Need for More Human Studies to Assess Software Protection." Several such experiments have been carried out.  In~\cite{ceccato2009effectiveness}, Ceccato et al. conducted experiments to analyze the potency of an identifier renaming transform using Masters and PhD students as subjects.  In~\cite{ceccato2014family} they expanded upon this earlier work with more students and more transforms.  Viticchi{\'e} et al.~\cite{viticchie2016assessment} conducted a similar experiment, wherein students were tasked with reverse engineering the {\em VarMerge} transform.  In all of these experiments, the authors gave subjects particular reverse engineering tasks to accomplish on obfuscated pieces of software as well as a baseline, non-obfuscated piece of software for comparison. In each case, the authors found statistically significant differences in reverse engineering the code. %Here, {\em performance} implies the amount of time taken by the subjects to perform a given task.
+
+%These type of experiments hold great promise in evaluating the strength of obfuscation and the tactics that can be used to defeat it.  They can, for instance, determine the limits of a given transform's efficacy (often in terms of the time required to successfully attack a particular program) by recording successful attacks against it. Given a large enough group of subjects, and subjects who have a reasonable skill level, these types of experiments can even establish a general hardness level for reverse engineering of particular transforms, as such a data set can demonstrate the lack of general ability within the population to reverse engineer a transform.  Finally, these types of experiments can also demonstrate best practices for attacking particular transforms, which in turn can be translated into attack models.
+
+\subsubsection{Need for Additional Studies}
+However, the number and type of subjects in the experiments limit their generalizability:
+
+\begin{displayquote}
+students are probably not the best choice to model real subjects. Professional hackers could be better subjects to evaluate MATE\footnote{MATE stands for {\em Man-At-The-End}.} attacks exploitation, but it is considerably difficult to involve them~\cite{viticchie2016assessment}.
+\end{displayquote}
+
+Studies with only students or limited number of participants cannot be generalized to the field of professional/expert reverse engineers and hackers, yet in all of the previously cited experiments, the test subjects have been a limited group of students. As far as we are aware, Ceccato et al.~\cite{ceccato2017professional} is the only published human subject reverse engineering study to employ professional experts, albeit with a small sample size.
+
+Besides Ceccato's efforts, several challenges generated by the Tigress obfuscator~\cite{tigress} were hosted on the Tigress website\footnote{See \url{http://tigress.cs.arizona.edu/challenges.html}}. Subjects (anyone on the Internet) were tasked with turning obfuscated code back into plaintext source and disclosing a description of their successful attacks. Several successful submissions by subject matter experts were submitted, which resulted in publications describing the reverse engineering methods used to defeat the obfuscations.  Salwan et al.~\cite{salwan2018symbolic}, for example, employed symbolic execution and taint analysis to defeat the obfuscation.
+
+\subsubsection{Current Methodology Limitations}
+
+%While experiments limited by the number and quality of participants cannot demonstrate the general ability of the target population of reverse engineering experts, the results are valuable nonetheless.  Successful attacks in these studies, for instance, can still demonstrate the floor of a given transform's vulnerability:  If a graduate student can defeat a transform in a given amount of time, then it is known that the transform can be defeated in that amount of time or less.  Regardless, more and higher quality participants can potentially yield both more successful attack strategies and higher generalizability of the results to the target population.
+
+The usefulness of human subject studies is also  limited by the data collected. Previous efforts ~\cite{ceccato2017professional, tigress} manually requested and analyzed subjects' reverse engineering strategies. However, conducting thorough analysis, particularly with high quality subjects, incurs large costs, drastically limiting scalability, both in terms of subject sample size and the diversity of the transforms tested.
+
+%This work presented in this paper expands on these previous efforts. In contrast to previous work, we generate challenge problems with a wider variety of protections, we make our system available to reverse engineers everywhere in the hopes of getting a diverse group of subjects, and we collect very fine-grained data showing, in detail, how the subjects went about solving the challenges.  Essentially, where prior work studied a limited number and type of test subjects in controlled environments, the \revenge system described here enables a large-scale, open, heterogeneous, and distributed experimental environment. The goal is to produce results that generalize to a wider population of reverse engineers than previous studies.
